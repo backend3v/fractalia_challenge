@@ -1,0 +1,11 @@
+<form (ngSubmit)="addTask()" class="task-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Título</mat-label>
+    <input matInput [(ngModel)]="title" name="title" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput [(ngModel)]="description" name="description"></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Agregar Tarea</button>
+</form>

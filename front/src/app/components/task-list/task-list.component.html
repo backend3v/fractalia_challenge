@@ -1,0 +1,30 @@
+<div class="task-list">
+  <mat-list>
+    <mat-list-item *ngFor="let task of tasks">
+      <mat-checkbox [(ngModel)]="task.completed" (change)="toggleTaskCompletion(task)">
+        <span [ngClass]="{'completed': task.completed}">{{ task.title }}</span>
+      </mat-checkbox>
+      <button mat-icon-button (click)="deleteTask(task.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button (click)="startEdit(task)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div *ngIf="editTask">
+  <h3>Editar Tarea</h3>
+  <mat-form-field>
+    <mat-label>Título</mat-label>
+    <input matInput [(ngModel)]="editTask.title">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Descripción</mat-label>
+    <textarea matInput [(ngModel)]="editTask.description"></textarea>
+  </mat-form-field>
+    <mat-label>Completado</mat-label>
+    <mat-checkbox [(ngModel)]="editTask.completed"></mat-checkbox>
+  <button mat-raised-button color="primary" (click)="saveEdit()">Guardar Cambios</button>
+  <button mat-raised-button (click)="editTask = null">Cancelar</button>
+</div>
