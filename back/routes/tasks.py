@@ -1,9 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from models.tasks import TaskDB, Task
+from models.tasks import TaskDB, Task, TaskUpdate
 from utils.database import SessionLocal
-
 
 router = APIRouter()
 
@@ -32,12 +31,17 @@ def create_task(task: Task, db: Session = Depends(get_db)):
 
 
 
-@router.put("/tasks/{task_id}", response_model=Task)
-def update_task(task_id: int, completed: bool, db: Session = Depends(get_db)):
+@router.put("/tasks/{task_id}", response_model=TaskUpdate)
+def update_task(task_id: int, task_update: Task, db: Session = Depends(get_db)):
     task = db.query(TaskDB).filter(TaskDB.id == task_id).first()
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
-    task.completed = completed
+    if task_update.title is not None:
+        task.title = task_update.title
+    if task_update.description is not None:
+        task.description = task_update.description
+    if task_update.completed is not None:
+        task.completed = task_update.completed
     db.commit()
     db.refresh(task)
     return task

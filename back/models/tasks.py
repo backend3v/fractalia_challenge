@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from pydantic import BaseModel
 from utils.database import Base
-
+from typing import Optional
 
 
 class TaskDB(Base):
@@ -14,9 +14,17 @@ class TaskDB(Base):
     completed = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    completed: Optional[bool] = None
 
 class Task(BaseModel):
-    title: str
+    id: int =  None
+    title: str = None
     description: str = None
     completed: bool = False
+    created_at: datetime = None
+
+    class Config:
+        orm_mode = True
